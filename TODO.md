@@ -1,6 +1,6 @@
 # User Service
 
-- [ ] Docker PostgreSQL Database
+- [X] Docker PostgreSQL Database
 - [ ] Create User API
 - [ ] Read User API
 - [ ] Update User API
