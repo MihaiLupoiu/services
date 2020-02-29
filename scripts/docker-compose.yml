@@ -1,0 +1,26 @@
+# Running the postgres database, adminer and web service
+
+version: '3.1'
+services:
+  db:
+    container_name: postgresdb    
+    image: postgres:12.1
+    restart: always
+    environment:
+      POSTGRES_DB: users      
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: secret
+
+    volumes:
+      - ./postgresdb:/var/lib/postgresql/data 
+
+    ports:  
+      - 5432:5432
+
+  adminer:
+    image: adminer
+    restart: always
+    depends_on:
+      - db
+    ports: 
+      - 8090:8080
