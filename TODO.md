@@ -4,10 +4,10 @@
 - [X] Connection to PostgreSQL Database
 - [X] HTTP server
 - [X] Create User API
-- [ ] Read User API
-- [ ] Update User API
+- [X] Read User API
+- [X] Update User API
 - [ ] Log In User API
-- [ ] Delete User API
+- [X] Delete User API
 - [ ] Autenticantion JWT
 - [X] Configuration Files With Environments (Prod/Dev/Local)
 - [ ] Dockerize service

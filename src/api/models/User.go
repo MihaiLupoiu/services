@@ -2,6 +2,7 @@ package models
 
 import (
 	"errors"
+	"log"
 	"time"
 
 	"github.com/badoux/checkmail"
@@ -88,22 +89,47 @@ func (u *User) Create(db *gorm.DB) (*User, error) {
 	return u, nil
 }
 
-// FindByEmail user by using email in database
-func (u *User) FindByEmail(db *gorm.DB, email string) (*User, error) {
+// FindByID find user by ID
+func (u *User) FindByID(db *gorm.DB, uid uint32) (*User, error) {
 	var err error
-	err = db.Debug().First(&u, "email LIKE ?", email).Error
+	err = db.Debug().First(&u, "id = ?", uid).Error
 	if err != nil {
 		return &User{}, err
 	}
-	return u, nil
+	return u, err
 }
 
 // Update user in database
-func (u *User) Update(db *gorm.DB) (*User, error) {
-	return nil, nil
+func (u *User) Update(db *gorm.DB, uid uint32) (*User, error) {
+	err := u.HashPassword()
+	if err != nil {
+		log.Fatal(err)
+	}
+	db = db.Debug().Model(&User{}).Where("id = ?", uid).Take(&User{}).UpdateColumns(
+		map[string]interface{}{
+			"firstname":    u.FirstName,
+			"lastname":     u.LastName,
+			"email":        u.Email,
+			"password":     u.Password,
+			"phone_number": u.PhoneNumber,
+			"country":      u.Country,
+			"postal_code":  u.PostalCode,
+			"update_at":    time.Now(),
+		},
+	)
+
+	if db.Error != nil {
+		return &User{}, db.Error
+	}
+
+	return u.FindByID(db, uid)
 }
 
 // Delete user in database
-func (u *User) Delete(db *gorm.DB) (*User, error) {
-	return nil, nil
+func (u *User) Delete(db *gorm.DB, uid uint32) (int64, error) {
+	db = db.Debug().Model(&User{}).Where("id = ?", uid).Take(&User{}).Delete(&User{})
+	if db.Error != nil {
+		return 0, db.Error
+	}
+	return db.RowsAffected, nil
 }
