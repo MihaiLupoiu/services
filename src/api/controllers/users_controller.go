@@ -14,7 +14,7 @@ import (
 )
 
 // CreateUser callback funtion
-// curl -i -X POST -H "Content-Type: application/json" -d "{ \"firstname\": \"Jhon\", \"lastname\": \"Donals\", \"email\": \"jd@fake.com\",\"password\": \"1234\"}" http://localhost:8080/user
+// curl -i -X POST -H "Content-Type: application/json" -d "{ \"firstname\": \"Jhon\", \"lastname\": \"Donals\", \"email\": \"jd@fake.com\",\"password\": \"1234\"}" http://localhost:8080/user/add
 func (service *Service) CreateUser(w http.ResponseWriter, r *http.Request) {
 	body, err := ioutil.ReadAll(r.Body)
 	if err != nil {
@@ -34,7 +34,7 @@ func (service *Service) CreateUser(w http.ResponseWriter, r *http.Request) {
 		util.JSONError(w, http.StatusUnprocessableEntity, err)
 		return
 	}
-
+	user.HashPassword()
 	userCreated, err := user.Create(service.DB)
 	if err != nil {
 		errorMessage := errors.New("Incorrect Details")
@@ -52,4 +52,30 @@ func (service *Service) CreateUser(w http.ResponseWriter, r *http.Request) {
 	w.Header().Set("Content-Type", "application/json")
 	w.Header().Set("Location", fmt.Sprintf("%s%s/%d", r.Host, r.RequestURI, userCreated.ID))
 	util.JSON(w, http.StatusCreated, userCreated)
+}
+
+// GetUser handler
+// curl -i -X POST -H "Content-Type: application/json" -d "{\"email\": \"jd@fake.com\"}" http://localhost:8080/user
+func (service *Service) GetUser(w http.ResponseWriter, r *http.Request) {
+	// TODO: Check if authenticated
+
+	body, err := ioutil.ReadAll(r.Body)
+	if err != nil {
+		util.JSONError(w, http.StatusUnprocessableEntity, err)
+	}
+	user := models.User{}
+
+	err = json.Unmarshal(body, &user)
+	if err != nil {
+		util.JSONError(w, http.StatusUnprocessableEntity, err)
+		return
+	}
+
+	userFound, err := user.FindByEmail(service.DB, user.Email)
+	if err != nil {
+		util.JSONError(w, http.StatusBadRequest, err)
+		return
+	}
+	w.Header().Set("Content-Type", "application/json")
+	util.JSON(w, http.StatusOK, userFound)
 }

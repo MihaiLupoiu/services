@@ -6,5 +6,6 @@ func (s *Service) initializeRoutes() {
 	s.Router.HandleFunc("/", s.Home).Methods("GET")
 
 	// Users Routes
-	s.Router.HandleFunc("/user", s.CreateUser).Methods("POST")
+	s.Router.HandleFunc("/user", s.GetUser).Methods("POST")
+	s.Router.HandleFunc("/user/add", s.CreateUser).Methods("POST")
 }

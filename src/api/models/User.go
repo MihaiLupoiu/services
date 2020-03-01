@@ -6,6 +6,7 @@ import (
 
 	"github.com/badoux/checkmail"
 	"github.com/jinzhu/gorm"
+	"golang.org/x/crypto/bcrypt"
 )
 
 // User structure for a user
@@ -22,14 +23,24 @@ type User struct {
 	UpdatedAt   time.Time `gorm:"default:CURRENT_TIMESTAMP" json:"updated_at"`
 }
 
-// Create user and save in database
-func (u *User) Create(db *gorm.DB) (*User, error) {
-	var err error
-	err = db.Debug().Create(&u).Error
+// Hash password
+func Hash(password string) ([]byte, error) {
+	return bcrypt.GenerateFromPassword([]byte(password), bcrypt.DefaultCost)
+}
+
+// VerifyPassword password and the hashed password is the same
+func VerifyPassword(hashedPassword, password string) error {
+	return bcrypt.CompareHashAndPassword([]byte(hashedPassword), []byte(password))
+}
+
+// HashPassword of user
+func (u *User) HashPassword() error {
+	hashedPassword, err := Hash(u.Password)
 	if err != nil {
-		return &User{}, err
+		return err
 	}
-	return u, nil
+	u.Password = string(hashedPassword)
+	return nil
 }
 
 // Validate User is valid
@@ -67,9 +78,24 @@ func (u *User) ValidateLogin() error {
 	return nil
 }
 
+// Create user and save in database
+func (u *User) Create(db *gorm.DB) (*User, error) {
+	var err error
+	err = db.Debug().Create(&u).Error
+	if err != nil {
+		return &User{}, err
+	}
+	return u, nil
+}
+
 // FindByEmail user by using email in database
-func (u *User) FindByEmail(db *gorm.DB) (*User, error) {
-	return nil, nil
+func (u *User) FindByEmail(db *gorm.DB, email string) (*User, error) {
+	var err error
+	err = db.Debug().First(&u, "email LIKE ?", email).Error
+	if err != nil {
+		return &User{}, err
+	}
+	return u, nil
 }
 
 // Update user in database
