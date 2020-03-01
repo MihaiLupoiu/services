@@ -1,13 +1,15 @@
 # User Service
 
 - [X] Docker PostgreSQL Database
-- [ ] Create User API
+- [X] Connection to PostgreSQL Database
+- [X] HTTP server
+- [X] Create User API
 - [ ] Read User API
 - [ ] Update User API
-- [ ] Delete User API
 - [ ] Log In User API
+- [ ] Delete User API
 - [ ] Autenticantion JWT
-- [ ] Configuration Files With Environments (Prod/Dev/Local)
+- [X] Configuration Files With Environments (Prod/Dev/Local)
 - [ ] Dockerize service
 - [ ] Tests
 - [ ] Use Github Actions for automationg build of Docker Image 
@@ -15,6 +17,6 @@
 - [ ] Docker Compose and Kubernetes Deployment
 - [ ] Monitoring using Prometheus
 - [ ] Refactor repository to suport multiple microservices 
-
+- [ ] Version of API entrypoint
 
 
