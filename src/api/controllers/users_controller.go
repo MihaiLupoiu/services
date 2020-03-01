@@ -12,6 +12,7 @@ import (
 
 	"github.com/gorilla/mux"
 
+	"github.com/MihaiLupoiu/services/src/api/auth"
 	"github.com/MihaiLupoiu/services/src/api/models"
 	"github.com/MihaiLupoiu/services/src/api/util"
 )
@@ -60,13 +61,29 @@ func (service *Service) CreateUser(w http.ResponseWriter, r *http.Request) {
 // GetUserByID handler
 // curl -i -X GET http://localhost:8080/user/1
 func (service *Service) GetUserByID(w http.ResponseWriter, r *http.Request) {
-	// TODO: Check if authenticated
+	err := auth.TokenValid(r)
+	if err != nil {
+		util.JSONError(w, http.StatusUnauthorized, errors.New("Unauthorized"))
+		return
+	}
+
 	vars := mux.Vars(r)
 	uid, err := strconv.ParseUint(vars["id"], 10, 32)
 	if err != nil {
 		util.JSONError(w, http.StatusBadRequest, err)
 		return
 	}
+
+	tokenID, err := auth.ExtractTokenID(r)
+	if err != nil {
+		util.JSONError(w, http.StatusUnauthorized, errors.New("Unauthorized"))
+		return
+	}
+	if tokenID != uint32(uid) {
+		util.JSONError(w, http.StatusUnauthorized, errors.New(http.StatusText(http.StatusUnauthorized)))
+		return
+	}
+
 	user := models.User{}
 	userGotten, err := user.FindByID(service.DB, uint32(uid))
 	if err != nil {
@@ -80,7 +97,12 @@ func (service *Service) GetUserByID(w http.ResponseWriter, r *http.Request) {
 // UpdateUser handler
 // curl -i -X POST -H "Content-Type: application/json" -d "{ \"firstname\": \"Jhon\", \"lastname\": \"Donals\", \"email\": \"jd@fakeee.com\",\"password\": \"1234\"}" http://localhost:8080/user/1
 func (service *Service) UpdateUser(w http.ResponseWriter, r *http.Request) {
-	// TODO: Autenticate
+	err := auth.TokenValid(r)
+	if err != nil {
+		util.JSONError(w, http.StatusUnauthorized, errors.New("Unauthorized"))
+		return
+	}
+
 	vars := mux.Vars(r)
 	uid, err := strconv.ParseUint(vars["id"], 10, 32)
 	if err != nil {
@@ -96,6 +118,16 @@ func (service *Service) UpdateUser(w http.ResponseWriter, r *http.Request) {
 	err = json.Unmarshal(body, &user)
 	if err != nil {
 		util.JSONError(w, http.StatusUnprocessableEntity, err)
+		return
+	}
+
+	tokenID, err := auth.ExtractTokenID(r)
+	if err != nil {
+		util.JSONError(w, http.StatusUnauthorized, errors.New("Unauthorized"))
+		return
+	}
+	if tokenID != uint32(uid) {
+		util.JSONError(w, http.StatusUnauthorized, errors.New(http.StatusText(http.StatusUnauthorized)))
 		return
 	}
 
@@ -124,13 +156,27 @@ func (service *Service) UpdateUser(w http.ResponseWriter, r *http.Request) {
 // DeleteUser handler
 // curl -i -X DELETE http://localhost:8080/user/1
 func (service *Service) DeleteUser(w http.ResponseWriter, r *http.Request) {
-	// TODO: Check if authenticated
+	err := auth.TokenValid(r)
+	if err != nil {
+		util.JSONError(w, http.StatusUnauthorized, errors.New("Unauthorized"))
+		return
+	}
 
 	vars := mux.Vars(r)
 	user := models.User{}
 	uid, err := strconv.ParseUint(vars["id"], 10, 32)
 	if err != nil {
 		util.JSONError(w, http.StatusBadRequest, err)
+		return
+	}
+
+	tokenID, err := auth.ExtractTokenID(r)
+	if err != nil {
+		util.JSONError(w, http.StatusUnauthorized, errors.New("Unauthorized"))
+		return
+	}
+	if tokenID != uint32(uid) {
+		util.JSONError(w, http.StatusUnauthorized, errors.New(http.StatusText(http.StatusUnauthorized)))
 		return
 	}
 

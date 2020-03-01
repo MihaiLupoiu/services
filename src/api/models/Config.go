@@ -24,8 +24,9 @@ type Database struct {
 
 // Service structure configuration file format
 type Service struct {
-	Port     int    `json:"port"`
-	LogLevel string `json:"loglevel"`
+	Port      int    `json:"port"`
+	APISecret string `json:"secret"`
+	LogLevel  string `json:"loglevel"`
 }
 
 // Load config of service

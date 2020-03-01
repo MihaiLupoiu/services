@@ -8,7 +8,8 @@
         "password":"secret"
     },      
     "service":{
-        "loglevel":"Info", 
+        "loglevel":"Info",
+        "secret" : "3ea3cd74-9857-489d-9e0a-6ff8bba88036", 
         "port":8080
     }
 }

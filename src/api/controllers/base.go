@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 
+	"github.com/MihaiLupoiu/services/src/api/auth"
 	"github.com/MihaiLupoiu/services/src/api/models"
 	"github.com/gorilla/mux"
 	"github.com/jinzhu/gorm"
@@ -18,7 +19,7 @@ type Service struct {
 }
 
 // Initialize Server Database
-func (service *Service) Initialize(DBType, DBUser, DBPassword, DBHost, DBName string, DBPort int) {
+func (service *Service) Initialize(DBType, DBUser, DBPassword, DBHost, DBName, APISecret string, DBPort int) {
 	var err error
 
 	if DBType == "postgres" {
@@ -33,6 +34,9 @@ func (service *Service) Initialize(DBType, DBUser, DBPassword, DBHost, DBName st
 
 	// Migrate the schema
 	service.DB.Debug().AutoMigrate(&models.User{})
+
+	// API secret
+	auth.SetAPISecret(APISecret)
 
 	// Create Router and initialize callbacks
 	service.Router = mux.NewRouter()

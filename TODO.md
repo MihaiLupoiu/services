@@ -6,10 +6,11 @@
 - [X] Create User API
 - [X] Read User API
 - [X] Update User API
-- [ ] Log In User API
+- [X] Log In User API
 - [X] Delete User API
-- [ ] Autenticantion JWT
+- [X] Autenticantion JWT
 - [X] Configuration Files With Environments (Prod/Dev/Local)
+- [ ] Investigate Swagger Documentation
 - [ ] Dockerize service
 - [ ] Tests
 - [ ] Use Github Actions for automationg build of Docker Image 

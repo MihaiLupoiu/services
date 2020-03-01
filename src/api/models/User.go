@@ -99,6 +99,16 @@ func (u *User) FindByID(db *gorm.DB, uid uint32) (*User, error) {
 	return u, err
 }
 
+// FindByEmail user by using email in database
+func (u *User) FindByEmail(db *gorm.DB, email string) (*User, error) {
+	var err error
+	err = db.Debug().First(&u, "email LIKE ?", email).Error
+	if err != nil {
+		return &User{}, err
+	}
+	return u, nil
+}
+
 // Update user in database
 func (u *User) Update(db *gorm.DB, uid uint32) (*User, error) {
 	err := u.HashPassword()
