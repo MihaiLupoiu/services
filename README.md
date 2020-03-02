@@ -6,11 +6,14 @@ Repository of services
 
 ## Services List
 
-### User
+### User Endpoints 
 
 Service for storing user related information
 
-#### Endpoints 
+To run the servin, inside `/scripts` there is a docker compose file. Execute ir like in the nex line and wait a few seconds:
+```bash
+docker-compose up
+```
 
 * Create User: `http://localhost:8080/user/add`
 Creates a user and does not require authentication
