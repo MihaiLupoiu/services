@@ -12,7 +12,8 @@
 - [X] Configuration Files With Environments (Prod/Dev/Local)
 - [ ] Investigate Swagger Documentation
 - [X] Dockerize service
-- [ ] Tests
+- [X] Tests Model
+- [ ] Tests Controller
 - [X] Use Github Actions for Testing
 - [ ] Use Github Actions for Automationg build of Docker Image 
 - [ ] Code Test Coverage and Badges
