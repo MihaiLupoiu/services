@@ -11,9 +11,10 @@
 - [X] Autenticantion JWT
 - [X] Configuration Files With Environments (Prod/Dev/Local)
 - [ ] Investigate Swagger Documentation
-- [ ] Dockerize service
+- [X] Dockerize service
 - [ ] Tests
-- [ ] Use Github Actions for automationg build of Docker Image 
+- [X] Use Github Actions for Testing
+- [ ] Use Github Actions for Automationg build of Docker Image 
 - [ ] Code Test Coverage and Badges
 - [ ] Docker Compose and Kubernetes Deployment
 - [ ] Monitoring using Prometheus
