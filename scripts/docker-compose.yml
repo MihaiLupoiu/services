@@ -24,3 +24,13 @@ services:
       - db
     ports: 
       - 8090:8080
+  
+  users:
+    image: myhay/service-user:1.0.0
+    restart: always
+    depends_on: 
+      - db
+    volumes:
+      - ./../configs/dev.json:/config.json 
+    ports: 
+      - 8080:8080

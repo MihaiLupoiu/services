@@ -115,16 +115,17 @@ func (u *User) Update(db *gorm.DB, uid uint32) (*User, error) {
 	if err != nil {
 		log.Fatal(err)
 	}
+
 	db = db.Debug().Model(&User{}).Where("id = ?", uid).Take(&User{}).UpdateColumns(
-		map[string]interface{}{
-			"firstname":    u.FirstName,
-			"lastname":     u.LastName,
-			"email":        u.Email,
-			"password":     u.Password,
-			"phone_number": u.PhoneNumber,
-			"country":      u.Country,
-			"postal_code":  u.PostalCode,
-			"update_at":    time.Now(),
+		User{
+			FirstName:   u.FirstName,
+			LastName:    u.LastName,
+			Email:       u.Email,
+			Password:    u.Password,
+			PhoneNumber: u.PhoneNumber,
+			Country:     u.Country,
+			PostalCode:  u.PostalCode,
+			UpdatedAt:   time.Now(),
 		},
 	)
 
@@ -132,7 +133,9 @@ func (u *User) Update(db *gorm.DB, uid uint32) (*User, error) {
 		return &User{}, db.Error
 	}
 
-	return u.FindByID(db, uid)
+	newUser, _ := u.FindByID(db, uid)
+
+	return newUser, nil
 }
 
 // Delete user in database

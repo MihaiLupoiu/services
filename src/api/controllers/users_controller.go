@@ -136,6 +136,7 @@ func (service *Service) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		util.JSONError(w, http.StatusUnprocessableEntity, err)
 		return
 	}
+
 	updatedUser, err := user.Update(service.DB, uint32(uid))
 	if err != nil {
 		errorMessage := errors.New("Incorrect Use")
@@ -150,6 +151,7 @@ func (service *Service) UpdateUser(w http.ResponseWriter, r *http.Request) {
 		util.JSONError(w, http.StatusInternalServerError, errorMessage)
 		return
 	}
+
 	util.JSON(w, http.StatusOK, updatedUser)
 }
 
