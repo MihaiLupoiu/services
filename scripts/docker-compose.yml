@@ -26,7 +26,7 @@ services:
       - 8090:8080
   
   users:
-    image: ""
+    image: myhay/service-user:1.0.0
     restart: always
     depends_on: 
       - db
