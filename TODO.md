@@ -8,18 +8,19 @@
 - [X] Update User API
 - [X] Log In User API
 - [X] Delete User API
-- [X] Autenticantion JWT
+- [X] Autenticacion JWT
 - [X] Configuration Files With Environments (Prod/Dev/Local)
 - [ ] Investigate Swagger Documentation
 - [X] Dockerize service
 - [X] Tests Model
 - [ ] Tests Controller
 - [X] Use Github Actions for Testing
-- [ ] Use Github Actions for Automationg build of Docker Image 
+- [ ] Use Github Actions for Automating build of Docker Image 
 - [ ] Code Test Coverage and Badges
-- [ ] Docker Compose and Kubernetes Deployment
+- [X] Docker Compose
+- [ ] Kubernetes Deployment
 - [ ] Monitoring using Prometheus
-- [ ] Refactor repository to suport multiple microservices 
+- [ ] Refactor repository to support multiple microservices 
 - [ ] Version of API entrypoint
 
 

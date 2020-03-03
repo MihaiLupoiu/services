@@ -1,14 +1,15 @@
 {
-    "db":{
-        "type":"postgres",
-        "host":"postgresdb", 
-        "port":5432, 
-        "user":"postgres",
-        "database":"users",
-        "password":"secret"
-    },      
-    "service":{
-        "loglevel":"Info", 
-        "port":8080
+    "db": {
+        "type": "postgres",
+        "host": "postgresdb",
+        "port": 5432,
+        "user": "postgres",
+        "database": "users",
+        "password": "secret"
+    },
+    "service": {
+        "loglevel": "Info",
+        "secret": "3ea3cd74-9857-8435-9e0a-6ff8bba88036",
+        "port": 8080
     }
 }
